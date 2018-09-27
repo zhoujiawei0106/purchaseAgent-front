@@ -15,7 +15,7 @@
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
     overflow: scroll;
-    overflow-y: hidden;
+    overflow-x: hidden;
   }
 
   #app {
