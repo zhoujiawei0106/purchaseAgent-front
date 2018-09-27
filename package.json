@@ -1,6 +1,6 @@
 {
   "name": "purchase-front",
-  "description": "A Vue.js project",
+  "description": "vue代购管理系统",
   "version": "1.0.0",
   "author": "zhoujiawei",
   "private": true,
