@@ -7,18 +7,21 @@ Vue.use(VueRouter);
 // 使用懒加载路由配置
 let routes = [{
   path: '/login',
-  component: resolve => require(['./page/login.vue'], resolve),
+  component: resolve => require(['./components/login.vue'], resolve),
   name: '',
   hidden: true
 }, {
   path: '/404',
-  component: resolve => require(['./page/404.vue'], resolve),
+  component: resolve => require(['./components/404.vue'], resolve),
   name: '',
   hidden: true
 }, {
   path: '/home',
-  component: resolve => require(['./page/home.vue'], resolve),
-  name: '导航一',
+  component: resolve => require(['./components/home.vue'], resolve),
+  name: '',
+  // children: [
+  //   {}
+  // ]
 }];
 
 var router = new VueRouter({
