@@ -4,7 +4,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Router from 'vue-router';
 import App from './App.vue';
 import 'font-awesome/css/font-awesome.min.css'
-
+// 引入路由
+import router from "./router.js"
 
 Vue.use(ElementUI);
 Vue.use(Router);
@@ -22,9 +23,6 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
-// 引入路由
-import router from "./router.js"
 
 new Vue({
   el: '#app',

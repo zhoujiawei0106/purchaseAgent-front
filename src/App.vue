@@ -25,23 +25,23 @@
     width: 100%;
   }
 
-  .el-submenu [class^=fa] {
-    vertical-align: baseline;
-    margin-right: 10px;
-  }
+  /*.el-submenu [class^=fa] {*/
+    /*vertical-align: baseline;*/
+    /*margin-right: 10px;*/
+  /*}*/
 
-  .el-menu-item [class^=fa] {
-    vertical-align: baseline;
-    margin-right: 10px;
-  }
+  /*.el-menu-item [class^=fa] {*/
+    /*vertical-align: baseline;*/
+    /*margin-right: 10px;*/
+  /*}*/
 
-  .toolbar {
-    background: #f2f2f2;
-    padding: 10px;
-    margin: 10px 0;
-    /*.el-form-item {*/
-      /*margin-bottom: 10px;*/
-    /*}*/
-  }
+  /*.toolbar {*/
+    /*background: #f2f2f2;*/
+    /*padding: 10px;*/
+    /*margin: 10px 0;*/
+    /*!*.el-form-item {*!*/
+      /*!*margin-bottom: 10px;*!*/
+    /*!*}*!*/
+  /*}*/
 
 </style>

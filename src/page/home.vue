@@ -13,7 +13,8 @@
 
     <el-container>
       <el-aside width="20%" style="background-color: rgb(238, 241, 246)">
-        <el-menu :default-openeds="['1', '3']">
+        <!--<el-menu :default-openeds="['1', '3']">-->
+        <el-menu>
           <el-submenu index="1">
             <template slot="title"><i class="el-icon-message"></i>导航一</template>
             <el-menu-item-group>
@@ -91,34 +92,34 @@
       }
     },
     methods: {
-      //折叠导航栏
-      collapseFun: function () {
-        this.collapsed = !this.collapsed;
-      },
-      showMenu(i, status) {
-        this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
-      },
-      //退出登录
-      logoutFun: function () {
-        var _this = this;
-        this.$confirm('确认退出吗?', '提示', {
-          //type: 'warning'
-        }).then(() => {
-          sessionStorage.removeItem('user');
-          _this.$router.push('/login');
-        }).catch(() => {
-
-        });
-
-
-      },
-    },
-    mounted() {
-      var user = sessionStorage.getItem('user');
-      if (user) {
-        user = JSON.parse(user);
-        this.sysUserName = user.username || '';
-      }
+    //   //折叠导航栏
+    //   collapseFun: function () {
+    //     this.collapsed = !this.collapsed;
+    //   },
+    //   showMenu(i, status) {
+    //     this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
+    //   },
+    //   //退出登录
+    //   logoutFun: function () {
+    //     var _this = this;
+    //     this.$confirm('确认退出吗?', '提示', {
+    //       //type: 'warning'
+    //     }).then(() => {
+    //       sessionStorage.removeItem('user');
+    //       _this.$router.push('/login');
+    //     }).catch(() => {
+    //
+    //     });
+    //
+    //
+    //   },
+    // },
+    // mounted() {
+    //   var user = sessionStorage.getItem('user');
+    //   if (user) {
+    //     user = JSON.parse(user);
+    //     this.sysUserName = user.username || '';
+    //   }
     }
   }
 </script>
@@ -133,102 +134,4 @@
   .el-aside {
     color: #333;
   }
-  /*.container {*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*bottom: 0;*/
-    /*width: 100%;*/
-    /*.header {*/
-    /*height: 60px;*/
-    /*line-height: 60px;*/
-    /*background: #bbdbfb;*/
-    /*color: #fff;*/
-    /*.userinfo {*/
-    /*text-align: right;*/
-    /*padding-right: 35px;*/
-    /*float: right;*/
-    /*.userinfo-inner {*/
-    /*cursor: pointer;*/
-    /*color: #fff;*/
-    /*}*/
-    /*}*/
-    /*.logo {*/
-    /*height: 60px;*/
-    /*font-size: 22px;*/
-    /*padding-left: 20px;*/
-    /*padding-right: 20px;*/
-    /*border-color: rgba(238,241,146,0.3);*/
-    /*border-right-width: 1px;*/
-    /*border-right-style: solid;*/
-    /*}*/
-    /*.logo-width {*/
-    /*width: 230px;*/
-    /*}*/
-    /*.logo-collapse-width {*/
-    /*width: 60px;*/
-    /*}*/
-    /*.tools {*/
-    /*padding: 0 23px;*/
-    /*width: 14px;*/
-    /*height: 60px;*/
-    /*line-height: 60px;*/
-    /*cursor: pointer;*/
-    /*}*/
-    /*}*/
-    /*.main {*/
-    /*display: flex;*/
-    /*position: absolute;*/
-    /*top: 60px;*/
-    /*bottom: 0;*/
-    /*overflow: hidden;*/
-    /*aside {*/
-    /*flex: 0 0 230px;*/
-    /*width: 230px;*/
-    /*.el-menu {*/
-    /*height: 100%;*/
-    /*}*/
-    /*.collapsed {*/
-    /*width: 60px;*/
-    /*.item {*/
-    /*position: relative;*/
-    /*}*/
-    /*.submenu {*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*left: 60px;*/
-    /*z-index: 99999;*/
-    /*height: auto;*/
-    /*display: none;*/
-    /*}*/
-    /*}*/
-    /*}*/
-    /*.menu-collapsed {*/
-    /*flex: 0 0 60px;*/
-    /*width: 60px;*/
-    /*}*/
-    /*.menu-expanded {*/
-    /*flex: 0 0 230px;*/
-    /*width: 230px;*/
-    /*}*/
-    /*.content-container {*/
-    /*flex: 1;*/
-    /*overflow-y: scroll;*/
-    /*padding: 20px;*/
-    /*.breadcrumb-container {*/
-    /*.title {*/
-    /*width: 200px;*/
-    /*float: left;*/
-    /*color: #475669;*/
-    /*}*/
-    /*.breadcrumb-inner {*/
-    /*float: right;*/
-    /*}*/
-    /*}*/
-    /*.content-wrapper {*/
-    /*background-color: #fff;*/
-    /*box-sizing: border-box;*/
-    /*}*/
-    /*}*/
-    /*}*/
-  /*}*/
 </style>

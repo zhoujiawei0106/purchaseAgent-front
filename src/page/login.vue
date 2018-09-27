@@ -33,14 +33,12 @@
             message: '请输入账号',
             trigger: 'blur'
           },
-            //{ validator: validaePass }
           ],
           checkPass: [{
             required: true,
             message: '请输入密码',
             trigger: 'blur'
           },
-            //{ validator: validaePass2 }
           ]
         },
         checked: true
@@ -59,7 +57,7 @@
             if (loginParams.username == "admin" && loginParams.password == "test123") {
               _this.logining = false;
               sessionStorage.setItem('user', JSON.stringify(loginParams));
-              _this.$router.push({ path: '/menutab' });
+              _this.$router.push({ path: '/home' });
             } else {
               _this.logining = false;
               _this.$alert('用户名或密码错误！', '提示信息', {
