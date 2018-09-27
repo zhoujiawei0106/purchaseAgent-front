@@ -1,6 +1,6 @@
 # purchase-front
 
-> A Vue.js project
+> vue代购管理系统
 
 ## Build Setup
 
