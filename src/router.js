@@ -19,9 +19,13 @@ let routes = [{
   path: '/home',
   component: resolve => require(['./components/home.vue'], resolve),
   name: '',
-  // children: [
-  //   {}
-  // ]
+  children: [
+    {
+      path: '/home/haha',
+      component: resolve => require(['./components/404.vue'], resolve),
+      name: ''
+    }
+  ]
 }];
 
 var router = new VueRouter({
