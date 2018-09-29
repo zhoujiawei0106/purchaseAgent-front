@@ -12,12 +12,14 @@
     </el-header>
 
     <el-container>
-      <el-aside style="background-color: rgb(238, 241, 246)" ref="leftSide">
-        <el-button plain icon="el-icon-d-arrow-left" @click="collapseMenu" style="margin-bottom: 3px; margin-top: 3px; margin-left: 85%;" size="small"></el-button>
-        <!--<el-radio-group v-model="isCollapse" style="margin-bottom: 5px;">-->
-          <!--<el-radio-button :label="false">展开</el-radio-button>-->
-          <!--<el-radio-button :label="true">收起</el-radio-button>-->
-        <!--</el-radio-group>-->
+      <el-aside :width="leftSideWidth">
+        <div class="no-mode-translate-demo-wrapper">
+          <transition name="no-mode-translate-fade">
+            <el-button icon="el-icon-d-arrow-left" v-if="isCollapse" key="off" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>
+            <el-button icon="el-icon-d-arrow-left" v-else="" key="on" @click="collapseMenu" :style="collapseOpenBtn" size="small"></el-button>
+          </transition>
+        </div>
+        <!--<el-button plain v-if="isCollapse" icon="el-icon-d-arrow-left" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>-->
         <el-menu unique-opened :collapse="isCollapse" class="el-menu-vertical-demo">
           <el-submenu v-for="menu in menus" :key="menu.id" :index="menu.id">
             <template slot="title">
@@ -33,7 +35,7 @@
         </el-menu>
       </el-aside>
 
-      <el-main width="85%" ref="rightSide">
+      <el-main :width="rightSideWidth">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -46,8 +48,24 @@
     components: {},
     data() {
       return {
+        // 菜单数据
         menus: [],
-        isCollapse: false
+        // 菜单是否展开(默认是)
+        isCollapse: false,
+        rightSideWidth: '85%',
+        leftSideWidth: '13%',
+        // 菜单展开样式
+        collapseOpenBtn: {
+          'margin-bottom': '3px',
+          'margin-top': '1px',
+          'margin-left': '86%'
+        },
+        // 菜单关闭样式
+        collapseCloseBtn: {
+          'margin-bottom': '3px',
+          'margin-top': '1px',
+          'margin-left': '25%'
+        }
       }
     },
     methods: {
@@ -67,6 +85,14 @@
       // 修改菜单收缩
       collapseMenu: function() {
         this.$data.isCollapse = !this.$data.isCollapse;
+        if (this.$data.isCollapse) {
+          this.$data.rightSideWidth = '97%';
+          this.$data.leftSideWidth = '3%';
+
+        } else {
+          this.$data.rightSideWidth = '85%';
+          this.$data.leftSideWidth = '13%';
+        }
       }
     },
     // 创建了vue实例后获取菜单数据
@@ -123,5 +149,25 @@
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 99.5%;
+  }
+
+  .no-mode-translate-demo-wrapper {
+    position: relative;
+    height: 3%;
+  }
+  .no-mode-translate-demo-wrapper button {
+    position: absolute;
+  }
+  .no-mode-translate-fade-enter-active, .no-mode-translate-fade-leave-active {
+    transition: all 0.5s;
+  }
+  .no-mode-translate-fade-enter, .no-mode-translate-fade-leave-active {
+    opacity: 0;
+  }
+  .no-mode-translate-fade-enter {
+    transform: translateX(31px);
+  }
+  .no-mode-translate-fade-leave-active {
+    transform: translateX(51px);
   }
 </style>
