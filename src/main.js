@@ -19,8 +19,10 @@ router.beforeEach((to, from, next) => {
     next({
       path: '/login'
     });
-  } else {
+  } else if(to.matched.length > 0) {
     next();
+  } else {
+    next('/home/error')
   }
 });
 

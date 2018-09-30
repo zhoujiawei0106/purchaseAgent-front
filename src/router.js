@@ -21,8 +21,12 @@ let routes = [{
   name: '',
   children: [
     {
-      path: '/home/haha',
+      path: '/home/error',
       component: resolve => require(['./components/404.vue'], resolve),
+      name: ''
+    }, {
+      path: '/home/usersInfo',
+      component: resolve => require(['./components/system/usersInfo.vue'], resolve),
       name: ''
     }
   ]

@@ -5,7 +5,7 @@
       <el-dropdown>
         <i class="el-icon-caret-bottom" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
+          <el-dropdown-item @click.native="logout">个人信息</el-dropdown-item>
           <el-dropdown-item @click.native="logout">注销</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -27,8 +27,8 @@
               <span slot="title">{{ menu.name }}</span>
             </template>
             <el-menu-item-group>
-              <router-link to="/home/haha" tag="li">
-                <el-menu-item v-for="subMenu in menu.subMenus" :key="subMenu.id" :index="subMenu.id">{{ subMenu.name }}</el-menu-item>
+              <router-link v-for="subMenu in menu.subMenus" :key="subMenu.id" :to="subMenu.url" tag="li">
+                <el-menu-item :index="subMenu.id">{{ subMenu.name }}</el-menu-item>
               </router-link>
             </el-menu-item-group>
           </el-submenu>
@@ -105,13 +105,16 @@
         subMenus: [
           {
             id: '1-1',
-            name: '用户管理'
+            name: '用户管理',
+            url: '/home/usersInfo'
           }, {
             id: '1-2',
+            url: '/home/error1',
             name: '权限管理'
           }, {
             id: '1-3',
-            name: '角色管理'
+            name: '角色管理',
+            url: '/home/usersInfo'
           },
         ]
       }, {
@@ -120,13 +123,16 @@
         subMenus: [
           {
             id: '2-1',
-            name: '客户管理'
+            name: '客户管理',
+            url: '/home/usersInfo'
           }, {
             id: '2-2',
-            name: '商品管理'
+            name: '商品管理',
+            url: '/home/usersInfo'
           }, {
             id: '2-3',
-            name: '行程管理'
+            name: '行程管理',
+            url: '/home/usersInfo'
           },
         ]
       })
