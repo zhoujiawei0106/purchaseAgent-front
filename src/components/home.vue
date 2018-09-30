@@ -13,14 +13,14 @@
 
     <el-container>
       <el-aside :width="leftSideWidth">
-        <div class="no-mode-translate-demo-wrapper">
+        <div class="no-mode-translate-wrapper">
           <transition name="no-mode-translate-fade">
             <el-button icon="el-icon-d-arrow-left" v-if="isCollapse" key="off" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>
             <el-button icon="el-icon-d-arrow-left" v-else="" key="on" @click="collapseMenu" :style="collapseOpenBtn" size="small"></el-button>
           </transition>
         </div>
         <!--<el-button plain v-if="isCollapse" icon="el-icon-d-arrow-left" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>-->
-        <el-menu unique-opened :collapse="isCollapse" class="el-menu-vertical-demo">
+        <el-menu unique-opened :collapse="isCollapse" class="el-menu-vertical">
           <el-submenu v-for="menu in menus" :key="menu.id" :index="menu.id">
             <template slot="title">
               <i class="el-icon-menu"></i>
@@ -35,9 +35,11 @@
         </el-menu>
       </el-aside>
 
+      <!--<el-scrollbar id="scrollY" wrap-style="overflow: auto;" :style="'width:' + rightSideWidth + ';'">-->
       <el-main :width="rightSideWidth">
         <router-view></router-view>
       </el-main>
+      <!--</el-scrollbar>-->
     </el-container>
     <el-footer height="3%" width="100%" style="text-align: center; font-size: 12px">这是我的脚</el-footer>
   </el-container>
@@ -52,7 +54,7 @@
         menus: [],
         // 菜单是否展开(默认是)
         isCollapse: false,
-        rightSideWidth: '85%',
+        rightSideWidth: '87%',
         leftSideWidth: '13%',
         // 菜单展开样式
         collapseOpenBtn: {
@@ -90,7 +92,7 @@
           this.$data.leftSideWidth = '3%';
 
         } else {
-          this.$data.rightSideWidth = '85%';
+          this.$data.rightSideWidth = '87%';
           this.$data.leftSideWidth = '13%';
         }
       }
@@ -147,15 +149,15 @@
     list-style: none;
   }
 
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
+  .el-menu-vertical:not(.el-menu--collapse) {
     width: 99.5%;
   }
 
-  .no-mode-translate-demo-wrapper {
+  .no-mode-translate-wrapper {
     position: relative;
     height: 3%;
   }
-  .no-mode-translate-demo-wrapper button {
+  .no-mode-translate-wrapper button {
     position: absolute;
   }
   .no-mode-translate-fade-enter-active, .no-mode-translate-fade-leave-active {
@@ -170,4 +172,8 @@
   .no-mode-translate-fade-leave-active {
     transform: translateX(51px);
   }
+
+  /*#scrollY .el-scrollbar .el-scrollbar__wrap {overflow-x: hidden;}*/
+
+  /*#scrollY .el-tree>.el-tree-node{display:inline-block;}*/
 </style>

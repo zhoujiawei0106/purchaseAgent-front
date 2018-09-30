@@ -16,6 +16,7 @@
     -webkit-font-smoothing: antialiased;
     overflow: scroll;
     overflow-x: hidden;
+    overflow-y: hidden;
   }
 
   #app {
