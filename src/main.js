@@ -21,8 +21,10 @@ router.beforeEach((to, from, next) => {
     });
   } else if(to.matched.length > 0) {
     next();
+  } else if(to.path == '/') {
+    next('/home')
   } else {
-    next('/home/error')
+    next('/404')
   }
 });
 

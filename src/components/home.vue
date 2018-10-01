@@ -15,8 +15,10 @@
       <el-aside :width="leftSideWidth">
         <div class="no-mode-translate-wrapper">
           <transition name="no-mode-translate-fade">
-            <el-button icon="el-icon-d-arrow-left" v-if="isCollapse" key="off" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>
-            <el-button icon="el-icon-d-arrow-left" v-else="" key="on" @click="collapseMenu" :style="collapseOpenBtn" size="small"></el-button>
+            <el-button icon="el-icon-d-arrow-left" v-if="isCollapse" key="off" @click="collapseMenu"
+                       :style="collapseCloseBtn" size="small"></el-button>
+            <el-button icon="el-icon-d-arrow-left" v-else="" key="on" @click="collapseMenu" :style="collapseOpenBtn"
+                       size="small"></el-button>
           </transition>
         </div>
         <!--<el-button plain v-if="isCollapse" icon="el-icon-d-arrow-left" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>-->
@@ -28,7 +30,7 @@
             </template>
             <el-menu-item-group>
               <router-link v-for="subMenu in menu.subMenus" :key="subMenu.id" :to="subMenu.url" tag="li">
-                <el-menu-item :index="subMenu.id">{{ subMenu.name }}</el-menu-item>
+                <el-menu-item :index="subMenu.id" @click="clickMenu">{{ subMenu.name }}</el-menu-item>
               </router-link>
             </el-menu-item-group>
           </el-submenu>
@@ -37,7 +39,22 @@
 
       <!--<el-scrollbar id="scrollY" wrap-style="overflow: auto;" :style="'width:' + rightSideWidth + ';'">-->
       <el-main :width="rightSideWidth">
-        <router-view></router-view>
+        <el-tabs type="border-card" closable @edit="handleTabsEdit" v-if="!editableTabs.length == 0">
+          <el-tab-pane
+            :key="item.name"
+            v-for="(item, index) in editableTabs"
+            :label="item.title"
+            :name="item.name"
+          >
+            {{item.content}}
+          </el-tab-pane>
+        </el-tabs>
+        <!--<el-tabs type="border-card" :closable="true">-->
+        <!--<el-tab-pane label="用户管理">-->
+        <!--<router-view></router-view>-->
+        <!--</el-tab-pane>-->
+        <!--</el-tabs>-->
+        <!--<router-view></router-view>-->
       </el-main>
       <!--</el-scrollbar>-->
     </el-container>
@@ -58,16 +75,16 @@
         leftSideWidth: '13%',
         // 菜单展开样式
         collapseOpenBtn: {
-          'margin-bottom': '3px',
           'margin-top': '1px',
           'margin-left': '86%'
         },
         // 菜单关闭样式
         collapseCloseBtn: {
-          'margin-bottom': '3px',
           'margin-top': '1px',
           'margin-left': '25%'
-        }
+        },
+        editableTabsValue: '',
+        editableTabs: []
       }
     },
     methods: {
@@ -85,7 +102,7 @@
         });
       },
       // 修改菜单收缩
-      collapseMenu: function() {
+      collapseMenu: function () {
         this.$data.isCollapse = !this.$data.isCollapse;
         if (this.$data.isCollapse) {
           this.$data.rightSideWidth = '97%';
@@ -95,10 +112,38 @@
           this.$data.rightSideWidth = '87%';
           this.$data.leftSideWidth = '13%';
         }
+      },
+      // 点击左边菜单后生成一个新的tab标签
+      clickMenu: function (targetName) {
+        let newTabName = ++this.tabIndex + '';
+        this.editableTabs.push({
+          title: 'New Tab',
+          name: newTabName,
+          content: 'New Tab content'
+        });
+        this.editableTabsValue = newTabName;
+      },
+      handleTabsEdit: function (targetName) {
+        debugger
+        let tabs = this.editableTabs;
+        let activeName = this.editableTabsValue;
+        if (activeName === targetName) {
+          tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+              let nextTab = tabs[index + 1] || tabs[index - 1];
+              if (nextTab) {
+                activeName = nextTab.name;
+              }
+            }
+          });
+        }
+
+        this.editableTabsValue = activeName;
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
       }
     },
-    // 创建了vue实例后获取菜单数据
-    created: function() {
+    // TODO 创建了vue实例后获取菜单数据(改为从接口获取)
+    created: function () {
       this.$data.menus.push({
         id: '1',
         name: '系统管理',
@@ -109,7 +154,7 @@
             url: '/home/usersInfo'
           }, {
             id: '1-2',
-            url: '/home/error1',
+            url: '/home/error',
             name: '权限管理'
           }, {
             id: '1-3',
@@ -124,7 +169,8 @@
           {
             id: '2-1',
             name: '客户管理',
-            url: '/home/usersInfo'
+            url: '/home/usersInfo',
+            urlName: 'usersInfo'
           }, {
             id: '2-2',
             name: '商品管理',
@@ -157,24 +203,30 @@
 
   .el-menu-vertical:not(.el-menu--collapse) {
     width: 99.5%;
+    margin-top: 1%;
   }
 
   .no-mode-translate-wrapper {
     position: relative;
     height: 3%;
   }
+
   .no-mode-translate-wrapper button {
     position: absolute;
   }
+
   .no-mode-translate-fade-enter-active, .no-mode-translate-fade-leave-active {
     transition: all 0.5s;
   }
+
   .no-mode-translate-fade-enter, .no-mode-translate-fade-leave-active {
     opacity: 0;
   }
+
   .no-mode-translate-fade-enter {
     transform: translateX(31px);
   }
+
   .no-mode-translate-fade-leave-active {
     transform: translateX(51px);
   }
