@@ -39,14 +39,9 @@
 
       <!--<el-scrollbar id="scrollY" wrap-style="overflow: auto;" :style="'width:' + rightSideWidth + ';'">-->
       <el-main :width="rightSideWidth">
-        <el-tabs type="border-card" closable @edit="handleTabsEdit" v-if="!editableTabs.length == 0">
-          <el-tab-pane
-            :key="item.name"
-            v-for="(item, index) in editableTabs"
-            :label="item.title"
-            :name="item.name"
-          >
-            {{item.content}}
+        <el-tabs type="card" v-model="editableTabsValue" closable @edit="handleTabsEdit" v-if="!editableTabs.length == 0" @tab-click="tabVue">
+          <el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="item.title" :name="item.name">
+            <router-view></router-view>
           </el-tab-pane>
         </el-tabs>
         <!--<el-tabs type="border-card" :closable="true">-->
@@ -114,17 +109,18 @@
         }
       },
       // 点击左边菜单后生成一个新的tab标签
-      clickMenu: function (targetName) {
-        let newTabName = ++this.tabIndex + '';
+      clickMenu: function (event) {
+        let menuId = event.index;
+        let menuName = event.$el.textContent;
         this.editableTabs.push({
-          title: 'New Tab',
-          name: newTabName,
-          content: 'New Tab content'
+          title: menuName,
+          name: menuId,
+          content: menuName
         });
-        this.editableTabsValue = newTabName;
+        this.editableTabsValue = menuId;
       },
+      // 关闭一个标签
       handleTabsEdit: function (targetName) {
-        debugger
         let tabs = this.editableTabs;
         let activeName = this.editableTabsValue;
         if (activeName === targetName) {
@@ -137,9 +133,12 @@
             }
           });
         }
-
         this.editableTabsValue = activeName;
         this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+      },
+      // TODO 点击tab标签跳页面
+      tabVue: function () {
+        this.$router.push("/home/error")
       }
     },
     // TODO 创建了vue实例后获取菜单数据(改为从接口获取)
