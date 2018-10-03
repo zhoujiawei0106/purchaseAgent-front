@@ -1,7 +1,7 @@
 <template lang="html">
   <el-container style="height: 100%; border: 1px solid #eee;width: 100%">
     <el-header style="text-align: right;" height="10%">
-      <span style="font-size: 16px;">王小虎</span>
+      <span style="font-size: 16px;">欢迎 {{ loginName }}</span>
       <el-dropdown>
         <i class="el-icon-caret-bottom" style="margin-right: 15px"></i>
         <el-dropdown-menu slot="dropdown">
@@ -14,8 +14,8 @@
     <el-container>
       <el-aside :width="leftSideWidth">
         <div class="no-mode-translate-wrapper">
-          <transition name="no-mode-translate-fade">
-            <el-button icon="el-icon-d-arrow-left" v-if="isCollapse" key="off" @click="collapseMenu"
+          <transition name="el-fade-in-linear">
+            <el-button icon="el-icon-d-arrow-right" v-if="isCollapse" key="off" @click="collapseMenu"
                        :style="collapseCloseBtn" size="small"></el-button>
             <el-button icon="el-icon-d-arrow-left" v-else="" key="on" @click="collapseMenu" :style="collapseOpenBtn"
                        size="small"></el-button>
@@ -58,8 +58,12 @@
   export default {
     data() {
       return {
+        // 登陆用户
+        loginName: '',
         // 菜单数据
         menus: [],
+        // 面包屑
+        breadcrumbs: [],
         // 菜单是否展开(默认是)
         isCollapse: false,
         rightSideWidth: '87%',
@@ -73,8 +77,7 @@
         collapseCloseBtn: {
           'margin-top': '1px',
           'margin-left': '25%'
-        },
-        breadcrumbs: []
+        }
       }
     },
     methods: {
@@ -127,16 +130,19 @@
       //   }
       // },
       /**
-       *
+       * 根据不同常见(直接访问路径，点击菜单)修改面包屑组件在vue中的值
        * @param menus 菜单数据数组
        * @param breadcrumbs 面包屑数组
        * @param url 当前/跳转的url
        */
       initBreadcrumbs: function (menus, breadcrumbs, url) {
+        // 情况面包屑在vue中的值
         this.breadcrumbs.splice(0, this.breadcrumbs.length);
+
         this.menus.find(function (value, index, arr) {
           if (value.subMenus.length > 0) {
             value.subMenus.find(function (subVal, subIndex, subArr) {
+              // 如果子菜单中的url和路由相同，修改面包屑在vue中的值(暂时菜单中只会有父子2层菜单)
               if (subVal.url == url) {
                 breadcrumbs.splice(0, 0, {
                   id: subVal.id,
@@ -154,11 +160,14 @@
       }
     },
     watch: {
+      // 观察路由，路由改变时修改面包屑
       $route(to, from){
         this.initBreadcrumbs(this.menus, this.breadcrumbs, to.path);
       }
     },
     created: function () {
+      this.loginName = JSON.parse(sessionStorage.getItem('user')).loginName
+
       // TODO 创建了vue实例后获取菜单数据(改为从接口获取)
       this.menus.push({
         id: '1',
@@ -197,6 +206,8 @@
           },
         ]
       });
+
+      // vue初始化时根据路由修改面包屑在vue中的值
       let url = this.$route.path;
       this.initBreadcrumbs(this.menus, this.breadcrumbs, url);
     }

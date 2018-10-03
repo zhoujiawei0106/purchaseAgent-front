@@ -6,9 +6,14 @@ import App from './App.vue';
 import 'font-awesome/css/font-awesome.min.css';
 // 引入路由
 import router from "./router.js";
+// fade/zoom 等
+import 'element-ui/lib/theme-chalk/base.css';
+// collapse 展开折叠
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 
 Vue.use(ElementUI);
 Vue.use(Router);
+Vue.component(CollapseTransition.name, CollapseTransition)
 
 router.beforeEach((to, from, next) => {
   if (to.path == '/login') {

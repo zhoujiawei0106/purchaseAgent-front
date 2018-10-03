@@ -45,16 +45,16 @@
       };
     },
     methods: {
-      handleSubmit2(ev) {
-        var _this = this;
+      handleSubmit2() {
+        let _this = this;
         _this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
             _this.logining = true;
-            var loginParams = {
-              username: this.ruleForm2.account,
+            let loginParams = {
+              loginName: this.ruleForm2.account,
               password: this.ruleForm2.checkPass
             };
-            if (loginParams.username == "admin" && loginParams.password == "test123") {
+            if (loginParams.loginName == "admin" && loginParams.password == "test123") {
               _this.logining = false;
               sessionStorage.setItem('user', JSON.stringify(loginParams));
               _this.$router.push({ path: '/home' });
