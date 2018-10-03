@@ -21,35 +21,32 @@
                        size="small"></el-button>
           </transition>
         </div>
-        <!--<el-button plain v-if="isCollapse" icon="el-icon-d-arrow-left" @click="collapseMenu" :style="collapseCloseBtn" size="small"></el-button>-->
-        <el-menu unique-opened :collapse="isCollapse" class="el-menu-vertical">
-          <el-submenu v-for="menu in menus" :key="menu.id" :index="menu.id">
-            <template slot="title">
-              <i class="el-icon-menu"></i>
-              <span slot="title">{{ menu.name }}</span>
-            </template>
-            <el-menu-item-group>
-              <router-link v-for="subMenu in menu.subMenus" :key="subMenu.id" :to="subMenu.url" tag="li">
-                <el-menu-item :index="subMenu.id" @click="clickMenu">{{ subMenu.name }}</el-menu-item>
-              </router-link>
-            </el-menu-item-group>
-          </el-submenu>
-        </el-menu>
+        <div>
+          <el-menu unique-opened :collapse="isCollapse" class="el-menu-vertical">
+            <el-submenu v-for="menu in menus" :key="menu.id" :index="menu.id">
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span slot="title">{{ menu.name }}</span>
+              </template>
+              <el-menu-item-group>
+                <router-link v-for="subMenu in menu.subMenus" :key="subMenu.id" :to="subMenu.url" tag="li">
+                  <el-menu-item :index="subMenu.id">{{ subMenu.name }}</el-menu-item>
+                </router-link>
+              </el-menu-item-group>
+            </el-submenu>
+          </el-menu>
+        </div>
       </el-aside>
 
       <!--<el-scrollbar id="scrollY" wrap-style="overflow: auto;" :style="'width:' + rightSideWidth + ';'">-->
       <el-main :width="rightSideWidth">
-        <el-tabs type="card" v-model="editableTabsValue" closable @edit="handleTabsEdit" v-if="!editableTabs.length == 0" @tab-click="tabVue">
-          <el-tab-pane :key="item.name" v-for="(item, index) in editableTabs" :label="item.title" :name="item.name">
-            <router-view></router-view>
-          </el-tab-pane>
-        </el-tabs>
-        <!--<el-tabs type="border-card" :closable="true">-->
-        <!--<el-tab-pane label="用户管理">-->
-        <!--<router-view></router-view>-->
-        <!--</el-tab-pane>-->
-        <!--</el-tabs>-->
-        <!--<router-view></router-view>-->
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="breadcrumb in breadcrumbs" :key="breadcrumb.id">
+            {{breadcrumb.name}}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+        <hr v-show="breadcrumbs.length > 0"/>
+        <router-view></router-view>
       </el-main>
       <!--</el-scrollbar>-->
     </el-container>
@@ -59,7 +56,6 @@
 
 <script>
   export default {
-    components: {},
     data() {
       return {
         // 菜单数据
@@ -78,12 +74,13 @@
           'margin-top': '1px',
           'margin-left': '25%'
         },
-        editableTabsValue: '',
-        editableTabs: []
+        breadcrumbs: []
       }
     },
     methods: {
-      //退出登录
+      /**
+       * 退出登录
+       */
       logout: function () {
         this.$confirm('是否退出登陆?', '退出登陆', {
           cancelButtonText: '取消',
@@ -96,54 +93,74 @@
 
         });
       },
-      // 修改菜单收缩
+      /**
+       * 修改菜单收缩
+       */
       collapseMenu: function () {
-        this.$data.isCollapse = !this.$data.isCollapse;
-        if (this.$data.isCollapse) {
-          this.$data.rightSideWidth = '97%';
-          this.$data.leftSideWidth = '3%';
+        this.isCollapse = !this.isCollapse;
+        if (this.isCollapse) {
+          this.rightSideWidth = '97%';
+          this.leftSideWidth = '3%';
 
         } else {
-          this.$data.rightSideWidth = '87%';
-          this.$data.leftSideWidth = '13%';
+          this.rightSideWidth = '87%';
+          this.leftSideWidth = '13%';
         }
       },
-      // 点击左边菜单后生成一个新的tab标签
-      clickMenu: function (event) {
-        let menuId = event.index;
-        let menuName = event.$el.textContent;
-        this.editableTabs.push({
-          title: menuName,
-          name: menuId,
-          content: menuName
-        });
-        this.editableTabsValue = menuId;
-      },
-      // 关闭一个标签
-      handleTabsEdit: function (targetName) {
-        let tabs = this.editableTabs;
-        let activeName = this.editableTabsValue;
-        if (activeName === targetName) {
-          tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-              let nextTab = tabs[index + 1] || tabs[index - 1];
-              if (nextTab) {
-                activeName = nextTab.name;
+      // /**
+      //  * 点击左边菜单后生成一个新面包屑
+      //  * @param event vue的dom对象
+      //  */
+      // clickMenu: function (event) {
+      //   this.breadcrumbs.splice(0, this.breadcrumbs.length);
+      //   while(true) {
+      //     let menuId = event.index;
+      //     let menuName = event.$el.textContent.trim().split(" ")[0];
+      //     this.breadcrumbs.splice(0, 0, {
+      //       id: menuId,
+      //       name: menuName
+      //     });
+      //     event = event.parentMenu;
+      //     if(common.isEmpty(event.index)) {
+      //       break;
+      //     }
+      //   }
+      // },
+      /**
+       *
+       * @param menus 菜单数据数组
+       * @param breadcrumbs 面包屑数组
+       * @param url 当前/跳转的url
+       */
+      initBreadcrumbs: function (menus, breadcrumbs, url) {
+        this.breadcrumbs.splice(0, this.breadcrumbs.length);
+        this.menus.find(function (value, index, arr) {
+          if (value.subMenus.length > 0) {
+            value.subMenus.find(function (subVal, subIndex, subArr) {
+              if (subVal.url == url) {
+                breadcrumbs.splice(0, 0, {
+                  id: subVal.id,
+                  name: subVal.name
+                });
+                breadcrumbs.splice(0, 0, {
+                  id: value.id,
+                  name: value.name
+                });
+                return;
               }
-            }
-          });
-        }
-        this.editableTabsValue = activeName;
-        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-      },
-      // TODO 点击tab标签跳页面
-      tabVue: function () {
-        this.$router.push("/home/error")
+            });
+          }
+        });
       }
     },
-    // TODO 创建了vue实例后获取菜单数据(改为从接口获取)
+    watch: {
+      $route(to, from){
+        this.initBreadcrumbs(this.menus, this.breadcrumbs, to.path);
+      }
+    },
     created: function () {
-      this.$data.menus.push({
+      // TODO 创建了vue实例后获取菜单数据(改为从接口获取)
+      this.menus.push({
         id: '1',
         name: '系统管理',
         subMenus: [
@@ -158,7 +175,7 @@
           }, {
             id: '1-3',
             name: '角色管理',
-            url: '/home/usersInfo'
+            url: '/home/usersInfo1'
           },
         ]
       }, {
@@ -168,19 +185,20 @@
           {
             id: '2-1',
             name: '客户管理',
-            url: '/home/usersInfo',
-            urlName: 'usersInfo'
+            url: '/home/usersInfo1',
           }, {
             id: '2-2',
             name: '商品管理',
-            url: '/home/usersInfo'
+            url: '/home/usersInfo1'
           }, {
             id: '2-3',
             name: '行程管理',
-            url: '/home/usersInfo'
+            url: '/home/usersInfo1'
           },
         ]
-      })
+      });
+      let url = this.$route.path;
+      this.initBreadcrumbs(this.menus, this.breadcrumbs, url);
     }
   }
 </script>
@@ -207,7 +225,7 @@
 
   .no-mode-translate-wrapper {
     position: relative;
-    height: 3%;
+    height: 35px;
   }
 
   .no-mode-translate-wrapper button {
