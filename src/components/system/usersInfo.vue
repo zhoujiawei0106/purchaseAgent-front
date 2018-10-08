@@ -235,7 +235,7 @@
        */
       overIcon(event) {
         this.spanFlag = true;
-        event.path[1].style.backgroundColor = '#ebebeb'
+        event.path[1].style.backgroundColor = '#f5f5f5'
       },
       /**
        * 鼠标移出隐藏查询条件div
