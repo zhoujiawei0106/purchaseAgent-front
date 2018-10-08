@@ -36,4 +36,13 @@
   .search-element-form .search-element-form-btn {
     padding-top: 1%;
   }
+
+  /** 所有查询页面收缩按钮 */
+  .search-item-icon {
+    text-align: center;
+    border-top:1px solid #ebebeb;
+    border-bottom:1px solid #ebebeb;
+    font-size: 18px;
+    cursor: pointer;
+  }
 </style>

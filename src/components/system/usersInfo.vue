@@ -1,32 +1,61 @@
 <template>
   <div>
     <div>
-      <el-form :inline="true" :model="formInline" class="demo-form-inline search-element-form">
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="用户: ">
-              <el-input v-model="formInline.user" placeholder="审批人"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="审批人: ">
-              <el-input v-model="formInline.user" placeholder="审批人"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="活动区域: ">
-              <el-select v-model="formInline.region" placeholder="活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-form-item class="search-element-form-btn">
-            <el-button type="primary" @click="searchBtn">查询</el-button>
-            <el-button type="primary" @click="resetBtn">重置</el-button>
-          </el-form-item>
-        </el-row>
-      </el-form>
+      <el-collapse-transition>
+        <div v-show="!isHideForm">
+          <el-form :inline="true" :model="formInline" class="search-element-form">
+            <el-row>
+              <el-col :span="8">
+                <el-form-item label="用户: ">
+                  <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="审批人: ">
+                  <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="活动区域: ">
+                  <el-select v-model="formInline.region" placeholder="活动区域">
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-form-item class="search-element-form-btn">
+                <el-button type="primary" @click="searchBtn">查询</el-button>
+                <el-button type="primary" @click="resetBtn">重置</el-button>
+              </el-form-item>
+            </el-row>
+          </el-form>
+        </div>
+      </el-collapse-transition>
+      <div class="search-item-icon" @mouseover="overIcon" @mouseout="outIcon" @click="hideForm">
+        <el-collapse-transition>
+          <div v-show="hideFlag && !spanFlag" :style="iconOverStyle">
+            <i class="el-icon-caret-top"></i>
+          </div>
+        </el-collapse-transition>
+        <el-collapse-transition>
+          <div v-show="hideFlag && spanFlag" :style="iconOutStyle">
+            <i class="el-icon-caret-top"></i>
+            <span>隐藏查询条件</span>
+          </div>
+        </el-collapse-transition>
+
+        <el-collapse-transition>
+          <div v-show="showFlag && !spanFlag" :style="iconOverStyle">
+            <i class="el-icon-caret-bottom"></i>
+          </div>
+        </el-collapse-transition>
+        <el-collapse-transition>
+          <div v-show="showFlag && spanFlag" :style="iconOutStyle">
+            <i class="el-icon-caret-bottom"></i>
+            <span>显示查询条件</span>
+          </div>
+        </el-collapse-transition>
+      </div>
     </div>
     <div style="padding-top: 3%;">
       <div>
@@ -53,6 +82,14 @@
   export default {
     data() {
       return {
+        // 隐藏查询条件
+        hideFlag: true,
+        // 显示查询条件
+        showFlag: false,
+        // 隐藏/显示span中的文字(true显示)
+        spanFlag: false,
+        // 是否隐藏查询条件(true隐藏)
+        isHideForm: false,
         // 当前第几页
         currentPage: 1,
         // 每页几条
@@ -64,6 +101,13 @@
           user: '',
           region: ''
         },
+        iconOverStyle: {
+          'color': ' #c3c3c3'
+        },
+        iconOutStyle: {
+          'color': ' #409eff'
+        },
+        iconStyle: {},
         // TODO 表格数据(后台动态获取)
         tableData: [{
           id: 1,
@@ -187,10 +231,26 @@
         this.currentPage = value
       },
       /**
-       * 修改分页条重新请求后台查询数据
+       * 鼠标移入隐藏查询条件div
        */
-      pageChange() {
-
+      overIcon(event) {
+        this.spanFlag = true;
+        event.path[1].style.backgroundColor = '#ebebeb'
+      },
+      /**
+       * 鼠标移出隐藏查询条件div
+       */
+      outIcon(event) {
+        this.spanFlag = false;
+        event.path[1].style.backgroundColor = 'white'
+      },
+      /**
+       * 点击隐藏查询条件div
+       */
+      hideForm() {
+        this.hideFlag = !this.hideFlag;
+        this.showFlag = !this.showFlag;
+        this.isHideForm = !this.isHideForm;
       }
     }
   }
